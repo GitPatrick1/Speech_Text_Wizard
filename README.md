@@ -1,19 +1,24 @@
 # Speech & Text Wizard
 
-Speech & Text Wizard is a web application that offers creative text-to-speech (TTS) and speech-to-text (STT) functionalities in a visually engaging interface. Built with HTML, CSS, and JavaScript, it features modern design elements such as animated gradient backgrounds, glassmorphism effects, interactive hover animations, and a responsive layout that works beautifully on both desktop and mobile devices.
+**Speech & Text Wizard** is a modern web application that leverages the Web Speech API to provide creative text-to-speech (TTS) and speech-to-text (STT) functionalities. Designed with a dynamic and responsive interface featuring animated gradients, glassmorphism effects, interactive hover animations, and ripple effects, this tool offers an exceptional user experience on both desktop and mobile devices.
 
 ## Features
 
-- **Text-to-Speech (TTS):**  
-  Convert typed text into natural-sounding speech using the Web Speech API.
-- **Speech-to-Text (STT):**  
-  Real-time transcription of spoken words into text.
-- **Custom Speed Control:**  
-  Adjust the speech speed using a stylish dropdown menu.
-- **Creative UI:**  
-  Enjoy a dynamic interface with animated gradients, glassmorphism, and ripple effects on buttons.
-- **Responsive Design:**  
-  Optimized layout for mobile devices and desktops.
+- **Text-to-Speech (TTS):**
+  - Converts typed text into natural-sounding speech.
+  - Customize voice, language, and speed using intuitive dropdown menus.
+- **Speech-to-Text (STT):**
+  - Real-time transcription of spoken words into text.
+  - Easy-to-use controls for starting, stopping, and clearing recordings.
+- **Creative and Responsive UI:**
+  - Animated gradient backgrounds and a glassmorphism container.
+  - Engaging hover animations and ripple effects on buttons.
+  - Fully responsive design optimized for smartphones and desktops.
+
+## Live Demo
+
+Check out the live demo hosted on GitHub Pages:  
+[Speech & Text Wizard](https://gitpatrick1.github.io/Speech_Text_Wizard/)
 
 ## Getting Started
 
@@ -23,7 +28,7 @@ Speech & Text Wizard is a web application that offers creative text-to-speech (T
 
 ### Installation
 
-1. **Clone the repository:**
+1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/speech-text-wizard.git
+   git clone https://github.com/yourusername/Speech_Text_Wizard.git
