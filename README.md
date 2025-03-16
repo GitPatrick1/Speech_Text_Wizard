@@ -18,7 +18,7 @@
 ## Live Demo
 
 Check out the live demo hosted on GitHub Pages:  
-[Speech & Text Wizard](https://gitpatrick1.github.io/Speech_Text_Wizard/)
+[Speech & Text Wizard](https://gitpatrick1.github.io/Speech_Text_Wizard/) 
 
 ## Getting Started
 
