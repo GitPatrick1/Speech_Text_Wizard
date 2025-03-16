@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Speech & Text Wizard</title>
+  <style>
+    /* --- Animated Gradient Background --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(45deg, #0fefca, #0fbeff, #42f598);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    @keyframes gradientBG {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* --- Glassmorphism Container --- */
+    .container {
+      width: 90%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+      animation: fadeInContainer 1s ease-out;
+    }
+    @keyframes fadeInContainer {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* --- Logo --- */
+    .logo {
+      display: block;
+      width: 80px;
+      margin: 0 auto 1rem;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+
+    /* --- Title with Animated Gradient Text --- */
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2.2rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #0fbeff, #42f598, #0fefca);
+      background-size: 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientText 5s ease infinite;
+    }
+    @keyframes gradientText {
+      0%   { background-position: 0%; }
+      50%  { background-position: 100%; }
+      100% { background-position: 0%; }
+    }
+
+    /* --- Tabs with Hover Animation --- */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 12px 24px;
+      margin: 8px;
+      border: 2px solid #0fbeff;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: transparent;
+      color: #0fbeff;
+      font-weight: 500;
+    }
+    .tab:hover {
+      background: #0fbeff;
+      color: #fff;
+      transform: rotate(2deg) scale(1.05);
+    }
+    .tab.active {
+      background: #0fbeff;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transform: scale(1.05);
+    }
+
+    /* --- Content Sections --- */
+    .content {
+      display: none;
+      animation: fadeInContent 0.5s;
+    }
+    .content.active {
+      display: block;
+    }
+    @keyframes fadeInContent {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Textareas --- */
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 15px;
+      margin-bottom: 1rem;
+      background: #fff;
+      border: 2px solid #42f598;
+      border-radius: 10px;
+      color: #333;
+      resize: vertical;
+      transition: border-color 0.3s;
+      font-size: 1rem;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #0fbeff;
+      box-shadow: 0 0 8px rgba(15, 190, 255, 0.5);
+    }
+
+    /* --- Controls (selects, dropdowns, buttons) --- */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+
+    /* --- Speed Control Dropdown --- */
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
+    .speed-control label {
+      font-weight: 500;
+      color: #333;
+    }
+    .speed-control select {
+      padding: 8px;
+      background: #fff;
+      border: 2px solid #42f598;
+      border-radius: 10px;
+      color: #333;
+      transition: border-color 0.3s;
+      font-size: 1rem;
+    }
+    .speed-control select:focus {
+      outline: none;
+      border-color: #0fbeff;
+    }
+
+    /* --- Buttons with Gradient and Ripple Effect --- */
+    button {
+      padding: 12px 24px;
+      background: linear-gradient(45deg, #0fbeff, #42f598);
+      border: none;
+      border-radius: 50px;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+      flex: 1;
+      min-width: 120px;
+      position: relative;
+      overflow: hidden;
+      font-weight: 500;
+    }
+    button:hover {
+      transform: rotate(2deg) scale(1.05);
+      background: linear-gradient(45deg, #42f598, #0fefca);
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* --- Select and Range --- */
+    select, input[type="range"] {
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #42f598;
+      border-radius: 10px;
+      color: #333;
+      transition: border-color 0.3s;
+      font-size: 1rem;
+    }
+    select:focus, input[type="range"]:focus {
+      outline: none;
+      border-color: #0fbeff;
+    }
+
+    /* --- Status Message --- */
+    .status {
+      text-align: center;
+      margin: 1rem 0;
+      height: 1.5rem;
+      color: #0fbeff;
+      font-weight: 500;
+    }
+
+    /* --- Ripple Effect on Buttons --- */
+    button .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.7);
+      transform: scale(0);
+      animation: rippleEffect 0.6s linear;
+      pointer-events: none;
+    }
+    @keyframes rippleEffect {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* --- Responsive Design for Mobile Devices --- */
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .tab {
+        padding: 10px 16px;
+        margin: 4px;
+        font-size: 0.9rem;
+      }
+      button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+      }
+      textarea {
+        font-size: 0.9rem;
+      }
+      .controls {
+        flex-direction: column;
+      }
+      select, input[type="range"], .speed-control select {
+        width: 100%;
+      }
+      .speed-control {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Replace 'logo.png' with the actual path or URL to your logo -->
+    <img src="logo.png" alt="Logo" class="logo" />
+
+    <h1>Speech & Text Wizard</h1>
+    
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('text-to-speech')">Text to Speech</button>
+      <button class="tab" onclick="switchTab('speech-to-text')">Speech to Text</button>
+    </div>
+    
+    <!-- TEXT TO SPEECH SECTION -->
+    <div id="text-to-speech" class="content active">
+      <textarea id="textInput" placeholder="Type the text you want to listen to..."></textarea>
+      <div class="controls">
+        <select id="voiceSelect">
+          <option value="">Loading voices...</option>
+        </select>
+        <select id="languageSelect">
+          <option value="it-IT">Italian</option>
+          <option value="en-US">English (US)</option>
+          <option value="en-GB">English (UK)</option>
+          <option value="fr-FR">French</option>
+          <option value="de-DE">German</option>
+          <option value="es-ES">Spanish</option>
+        </select>
+      </div>
+      <div class="controls speed-control">
+        <label for="rateSelect">Speed:</label>
+        <select id="rateSelect">
+          <option value="0.5">0.5x</option>
+          <option value="0.6">0.6x</option>
+          <option value="0.7">0.7x</option>
+          <option value="0.8">0.8x</option>
+          <option value="0.9">0.9x</option>
+          <option value="1" selected>1x</option>
+          <option value="1.1">1.1x</option>
+          <option value="1.2">1.2x</option>
+          <option value="1.3">1.3x</option>
+          <option value="1.4">1.4x</option>
+          <option value="1.5">1.5x</option>
+          <option value="1.6">1.6x</option>
+          <option value="1.7">1.7x</option>
+          <option value="1.8">1.8x</option>
+          <option value="1.9">1.9x</option>
+          <option value="2">2x</option>
+        </select>
+      </div>
+      <div class="controls">
+        <button id="speakBtn">Speak</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="stopBtn">Stop</button>
+      </div>
+      <div class="status" id="ttsStatus"></div>
+    </div>
+    
+    <!-- SPEECH TO TEXT SECTION -->
+    <div id="speech-to-text" class="content">
+      <textarea id="outputText" placeholder="Your transcribed text will appear here..." readonly></textarea>
+      <div class="controls">
+        <select id="sttLanguageSelect">
+          <option value="it-IT">Italian</option>
+          <option value="en-US">English (US)</option>
+          <option value="en-GB">English (UK)</option>
+          <option value="fr-FR">French</option>
+          <option value="de-DE">German</option>
+          <option value="es-ES">Spanish</option>
+        </select>
+      </div>
+      <div class="controls">
+        <button id="startBtn">Start Recording</button>
+        <button id="stopRecordingBtn">Stop Recording</button>
+        <button id="clearBtn">Clear</button>
+      </div>
+      <div class="status" id="sttStatus"></div>
+    </div>
+  </div>
+  
+  <script>
+    /* --- JavaScript for TTS and STT --- */
+
+    // Global Variables
+    let speechSynthesis = window.speechSynthesis;
+    let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = speechRecognition ? new speechRecognition() : null;
+    let synth = window.speechSynthesis;
+    let voices = [];
+    let currentUtterance = null;
+    let isRecording = false;
+    let isPaused = false; // For TTS pause/resume
+
+    // DOM Elements
+    const textInput = document.getElementById('textInput');
+    const outputText = document.getElementById('outputText');
+    const voiceSelect = document.getElementById('voiceSelect');
+    const languageSelect = document.getElementById('languageSelect');
+    const sttLanguageSelect = document.getElementById('sttLanguageSelect');
+    const rateSelect = document.getElementById('rateSelect');
+    const speakBtn = document.getElementById('speakBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const startBtn = document.getElementById('startBtn');
+    const stopRecordingBtn = document.getElementById('stopRecordingBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const ttsStatus = document.getElementById('ttsStatus');
+    const sttStatus = document.getElementById('sttStatus');
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      // TTS Configuration
+      if (speechSynthesis) {
+        const populateVoices = () => {
+          voices = synth.getVoices();
+          voiceSelect.innerHTML = '';
+          const voicesByLang = {};
+
+          voices.forEach(voice => {
+            if (!voicesByLang[voice.lang]) {
+              voicesByLang[voice.lang] = [];
+            }
+            voicesByLang[voice.lang].push(voice);
+          });
+
+          Object.keys(voicesByLang).sort().forEach(lang => {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = lang;
+            voicesByLang[lang].forEach(voice => {
+              const option = document.createElement('option');
+              option.value = voice.name;
+              option.textContent = voice.name;
+              optgroup.appendChild(option);
+            });
+            voiceSelect.appendChild(optgroup);
+          });
+
+          // Try to select an Italian voice by default if available
+          const italianVoice = voices.find(voice => voice.lang.includes('it-'));
+          if (italianVoice) {
+            voiceSelect.value = italianVoice.name;
+          }
+        };
+
+        populateVoices();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+          speechSynthesis.onvoiceschanged = populateVoices;
+        }
+
+        speakBtn.addEventListener('click', speak);
+        pauseBtn.addEventListener('click', togglePause);
+        stopBtn.addEventListener('click', stopSpeaking);
+
+        languageSelect.addEventListener('change', () => {
+          const selectedLang = languageSelect.value;
+          const matchingVoice = voices.find(voice => voice.lang.includes(selectedLang));
+          if (matchingVoice) {
+            voiceSelect.value = matchingVoice.name;
+          }
+        });
+      } else {
+        speakBtn.disabled = true;
+        pauseBtn.disabled = true;
+        stopBtn.disabled = true;
+        ttsStatus.textContent = "Speech synthesis is not supported by your browser.";
+      }
+
+      // STT Configuration
+      if (recognition) {
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        recognition.onstart = () => {
+          isRecording = true;
+          startBtn.classList.add('recording');
+          startBtn.textContent = "Recording in progress...";
+          sttStatus.textContent = "Listening...";
+        };
+
+        recognition.onresult = (event) => {
+          let interimTranscript = '';
+          let finalTranscript = outputText.value;
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalTranscript += transcript + ' ';
+            } else {
+              interimTranscript += transcript;
+            }
+          }
+          outputText.value = finalTranscript;
+          sttStatus.textContent = interimTranscript;
+        };
+
+        recognition.onerror = (event) => {
+          console.error('Error in recognition: ', event.error);
+          sttStatus.textContent = "Error: " + event.error;
+          stopRecording();
+        };
+
+        recognition.onend = () => {
+          stopRecording();
+          sttStatus.textContent = "Recording ended.";
+        };
+
+        startBtn.addEventListener('click', startRecording);
+        stopRecordingBtn.addEventListener('click', stopRecording);
+        clearBtn.addEventListener('click', () => {
+          outputText.value = '';
+          sttStatus.textContent = '';
+        });
+
+        sttLanguageSelect.addEventListener('change', () => {
+          recognition.lang = sttLanguageSelect.value;
+        });
+
+        // Set default language
+        recognition.lang = sttLanguageSelect.value;
+      } else {
+        startBtn.disabled = true;
+        stopRecordingBtn.disabled = true;
+        clearBtn.disabled = true;
+        sttStatus.textContent = "Speech recognition is not supported by your browser.";
+      }
+
+      // Ripple Effect on Buttons
+      document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', function(e) {
+          let ripple = document.createElement('span');
+          ripple.classList.add('ripple');
+          this.appendChild(ripple);
+
+          let rect = this.getBoundingClientRect();
+          let size = Math.max(rect.width, rect.height);
+          ripple.style.width = ripple.style.height = size + 'px';
+
+          let x = e.clientX - rect.left - size / 2;
+          let y = e.clientY - rect.top - size / 2;
+          ripple.style.left = x + 'px';
+          ripple.style.top = y + 'px';
+
+          ripple.addEventListener('animationend', () => {
+            ripple.remove();
+          });
+        });
+      });
+    });
+
+    /* --- Tab Switching --- */
+    function switchTab(tabId) {
+      const tabs = document.querySelectorAll('.tab');
+      const contents = document.querySelectorAll('.content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      contents.forEach(content => content.classList.remove('active'));
+
+      document.querySelector(`[onclick="switchTab('${tabId}')"]`).classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+
+      if (isRecording) {
+        stopRecording();
+      }
+      if (synth.speaking) {
+        stopSpeaking();
+      }
+    }
+
+    /* --- Text-to-Speech Functions --- */
+    function speak() {
+      if (synth.speaking) {
+        stopSpeaking();
+      }
+      const text = textInput.value;
+      if (!text) {
+        ttsStatus.textContent = "Please enter some text to read.";
+        return;
+      }
+      currentUtterance = new SpeechSynthesisUtterance(text);
+      const selectedVoice = voices.find(voice => voice.name === voiceSelect.value);
+      if (selectedVoice) {
+        currentUtterance.voice = selectedVoice;
+      } else {
+        currentUtterance.lang = languageSelect.value;
+      }
+      currentUtterance.rate = parseFloat(rateSelect.value);
+
+      currentUtterance.onstart = () => {
+        ttsStatus.textContent = "Reading in progress...";
+        isPaused = false;
+        pauseBtn.textContent = "Pause";
+      };
+      currentUtterance.onend = () => {
+        ttsStatus.textContent = "Reading completed.";
+        currentUtterance = null;
+        isPaused = false;
+      };
+      currentUtterance.onerror = (event) => {
+        ttsStatus.textContent = "Error while reading.";
+        console.error('SpeechSynthesis error:', event);
+      };
+      synth.speak(currentUtterance);
+    }
+
+    function togglePause() {
+      if (!synth.speaking) return;
+      if (!isPaused) {
+        synth.pause();
+        isPaused = true;
+        pauseBtn.textContent = "Resume";
+        ttsStatus.textContent = "Reading paused.";
+      } else {
+        synth.resume();
+        isPaused = false;
+        pauseBtn.textContent = "Pause";
+        ttsStatus.textContent = "Reading in progress...";
+      }
+    }
+
+    function stopSpeaking() {
+      synth.cancel();
+      ttsStatus.textContent = "Reading stopped.";
+      pauseBtn.textContent = "Pause";
+      currentUtterance = null;
+      isPaused = false;
+    }
+
+    /* --- Speech-to-Text Functions --- */
+    function startRecording() {
+      if (isRecording) return;
+      try {
+        recognition.lang = sttLanguageSelect.value;
+        recognition.start();
+      } catch (error) {
+        console.error('Error starting recognition:', error);
+        sttStatus.textContent = "Error starting recognition.";
+      }
+    }
+
+    function stopRecording() {
+      if (!isRecording) return;
+      try {
+        recognition.stop();
+        isRecording = false;
+        startBtn.classList.remove('recording');
+        startBtn.textContent = "Start Recording";
+      } catch (error) {
+        console.error('Error stopping recognition:', error);
+      }
+    }
+  </script>
+</body>
+</html>
